@@ -1,0 +1,13 @@
+server:
+  port: 8082
+  servlet:
+    context-path: /two
+
+demo:
+  ms:
+    one:
+      url: http://localhost:8081
+
+spring:
+  application:
+    name: demo-ms-two-${random.uuid}
