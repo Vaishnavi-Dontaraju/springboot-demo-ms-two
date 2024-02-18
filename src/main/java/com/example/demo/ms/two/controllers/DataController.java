@@ -11,17 +11,24 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 @RestController
 public class DataController {
-    @Value("${demo.ms.one.url}")
-    private String demoMsOneUrl;
 
-    @Value("${spring.application.name}")
-    private String applicationId;
+    private final String demoMsOneUrl;
+    private final String applicationId;
+    private final RestTemplate restTemplate;
+
+    public DataController(@Value("${demo.ms.one.url}") String demoMsOneUrl,
+                          @Value("${spring.application.name}") String applicationId,
+                          RestTemplate restTemplate) {
+        this.demoMsOneUrl = demoMsOneUrl;
+        this.applicationId = applicationId;
+        this.restTemplate = restTemplate;
+    }
 
     @GetMapping("/data")
     public DataResponse getData() {
         log.info("Received request to /data");
         String url = demoMsOneUrl + "/one/greeting?name=" + applicationId;
-        GreetingResponse msOneResponse = new RestTemplate().getForObject(url, GreetingResponse.class);
+        GreetingResponse msOneResponse = restTemplate.getForObject(url, GreetingResponse.class);
 
 
         DataResponse finalResponse = new DataResponse(applicationId, msOneResponse);
